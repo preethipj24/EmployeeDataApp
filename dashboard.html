@@ -167,8 +167,7 @@
         async function fetchEmployees() {
             showLoading();
             try {
-                const BASE_URL = 'https://your-app-name.onrender.com'; // Replace with your actual Render URL
-                const response = await fetch(`${BASE_URL}/api/employees`);
+                const response = await fetch('http://localhost:3000/api/employees');
                 const employees = await response.json();
                 hideLoading();
 
@@ -192,7 +191,7 @@
 
                         const actionsCell = row.insertCell();
                         const downloadButton = document.createElement('a');
-                        downloadButton.href = `${BASE_URL}/api/employees/${employee.id}/pdf`;
+                        downloadButton.href = `http://localhost:3000/api/employees/${employee.id}/pdf`;
                         downloadButton.textContent = 'Download PDF';
                         downloadButton.classList.add('action-button');
                         downloadButton.target = '_blank'; // Open PDF in a new tab

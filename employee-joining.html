@@ -386,7 +386,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="p-2 pt-13 text-right">
+                  <td colspan="2" class="p-2 pt-12 text-right">
                     <div class="form-section font-sans text-base mt-8">
                       <label class="block font-bold mb-2">Signature of Employee:</label>
                       <canvas id="signature-pad" width="400" height="150" class="signature-canvas w-full max-w-md mx-auto block"></canvas>
@@ -579,9 +579,7 @@
             data.signature_image_data = canvas.toDataURL('image/png'); // Get base64 image data
 
             try {
-                const BASE_URL = 'https://your-app-name.onrender.com'; // Replace with your actual deployed backend URL
-                const response = await fetch(`${BASE_URL}/api/employees`, 
-                {
+                const response = await fetch('http://localhost:3000/api/employees', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

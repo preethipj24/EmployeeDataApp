@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Joining Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <style>
+        body {
+            padding: 2rem;
+            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+        /* Tailwind-like rounded corners for inputs and buttons */
+        input, select, textarea, button, canvas {
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+            padding: 0.5rem 1rem;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+            padding: 0.5rem 1rem;
+        }
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            border-color: #565e64;
+        }
+        /* Custom styles for tables within the form */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        input[type="text"], input[type="date"], input[type="tel"], input[type="email"], textarea, select {
+            width: 100%;
+            box-sizing: border-box;
+            border: none; /* Remove default input border */
+            padding: 4px;
+        }
+        /* Ensure inputs inside table cells don't have their own borders */
+        table input, table select {
+            border: none !important;
+        }
+        .signature-canvas {
+            border: 1px solid #000;
+            background-color: #fff;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 1.5rem;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #0d6efd;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .message-box button {
+            margin-top: 15px;
+            padding: 8px 15px;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-bold text-gray-800 underline">EMPLOYEE JOINING REPORT</h2>
+            <p class="text-gray-600 mt-2">Give all the information (CAPITAL LETTERS ONLY) in full and correct (Name and DOB As Per Aadhar)</p>
+        </div>
+
+        <form id="joiningForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 form-section">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                    <input type="text" name="first_name" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Middle Name</label>
+                    <input type="text" name="middle_name" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                    <input type="text" name="last_name" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 form-section">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                    <input type="text" name="department" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Designation</label>
+                    <input type="text" name="designation" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                <input type="text" name="location" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Blood Group</label>
+                <input type="text" name="blood_group" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase">
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Father / Husband’s Name</label>
+                <input type="text" name="father_husband_name" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Mobile No</label>
+                <input type="tel" name="mobile_no" class="form-control w-full p-2 border border-gray-300 rounded-md" pattern="[0-9]{10}" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Address for Communication in Bangalore</label>
+                <input type="text" name="address_bangalore" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                <input type="text" name="pincode_bangalore" class="form-control w-full p-2 border border-gray-300 rounded-md mt-2" placeholder="Pin Code" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Permanent Address</label>
+                <input type="text" name="permanent_address" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                <input type="text" name="permanent_pincode" class="form-control w-full p-2 border border-gray-300 rounded-md mt-2" placeholder="Pin Code" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Email ID</label>
+                <input type="email" name="email_id" class="form-control w-full p-2 border border-gray-300 rounded-md" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Date of Birth (Day/Month/Year)</label>
+                <input type="date" name="date_of_birth" class="form-control w-full p-2 border border-gray-300 rounded-md" required>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Marital Status</label>
+                <select name="marital_status" class="form-select w-full p-2 border border-gray-300 rounded-md" required>
+                    <option value="">Select</option>
+                    <option>Single</option>
+                    <option>Married</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-section">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Emergency Contact (EC) Person</label>
+                <input type="text" name="ec_person_name" class="form-control w-full p-2 border border-gray-300 rounded-md uppercase" required>
+                <input type="tel" name="ec_contact_number" class="form-control w-full p-2 border border-gray-300 rounded-md mt-2" placeholder="EC Contact Number (Not Your Own)" required>
+                <input type="text" name="ec_relationship" class="form-control w-full p-2 border border-gray-300 rounded-md mt-2" placeholder="Relationship" required>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+           <div class="form-section font-sans text-base">
+              <strong class="block text-gray-800 text-lg mb-2">Dependents Details (Mandatory):</strong>
+
+              <table class="w-full border border-gray-400 rounded-md overflow-hidden" style="table-layout: fixed;">
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th class="p-2 border border-gray-400 w-[5%]">SL. No</th>
+                    <th class="p-2 border border-gray-400 w-[15%]">Name</th>
+                    <th class="p-2 border border-gray-400 w-[20%]">Relationship<br>With Employee</th>
+                    <th class="p-2 border border-gray-400 w-[15%]">Date of<br>Birth of Dependent</th>
+                    <th class="p-2 border border-gray-400 w-[25%]">Permanent Address</th>
+                    <th class="p-2 border border-gray-400 w-[20%]">Contact Details</th>
+                  </tr>
+                </thead>
+                <tbody id="dependents-table-body">
+                  <!-- Dependent rows will be added here by JavaScript -->
+                  <tr>
+                    <td class="p-2 border border-gray-400">1.</td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_name[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_relationship[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="date" name="dependent_dob[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_address[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_contact[]" class="w-full" /></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 border border-gray-400">2.</td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_name[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_relationship[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="date" name="dependent_dob[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_address[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_contact[]" class="w-full" /></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 border border-gray-400">3.</td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_name[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_relationship[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="date" name="dependent_dob[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_address[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_contact[]" class="w-full" /></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 border border-gray-400">4.</td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_name[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_relationship[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="date" name="dependent_dob[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_address[]" class="w-full" /></td>
+                    <td class="p-2 border border-gray-400"><input type="text" name="dependent_contact[]" class="w-full" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="form-section font-sans text-base">
+              <strong class="block text-gray-800 text-lg mb-2">Highest Education:</strong>
+              <input type="text" name="highest_education" class="w-full p-2 border border-gray-300 rounded-md uppercase" />
+            </div>
+
+
+            <hr class="my-6 border-gray-300">
+            <div class="form-section font-sans text-base">
+            <table class="w-full border border-gray-400 rounded-md overflow-hidden" style="table-layout: fixed;">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="p-2 border border-gray-400 w-[10%]">S.No.</th>
+                  <th class="p-2 border border-gray-400 w-[20%]">Qualification</th>
+                  <th class="p-2 border border-gray-400 w-[30%]">University & College<br>(Fill Both the Details)</th>
+                  <th class="p-2 border border-gray-400 w-[20%]">Year of Passing</th>
+                  <th class="p-2 border border-gray-400 w-[20%]">Percentage % Obtained</th>
+                </tr>
+              </thead>
+              <tbody id="education-table-body">
+                <tr>
+                  <td class="p-2 border border-gray-400">1.</td>
+                  <td class="p-2 border border-gray-400">Std. X</td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_university_college[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_year_passing[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_percentage[]" class="w-full" /></td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-gray-400">2.</td>
+                  <td class="p-2 border border-gray-400">Std. XII</td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_university_college[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_year_passing[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_percentage[]" class="w-full" /></td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-gray-400">3.</td>
+                  <td class="p-2 border border-gray-400">UG (Specify):</td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_university_college[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_year_passing[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_percentage[]" class="w-full" /></td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-gray-400">4.</td>
+                  <td class="p-2 border border-gray-400">PG (Specify):</td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_university_college[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_year_passing[]" class="w-full" /></td>
+                  <td class="p-2 border border-gray-400"><input type="text" name="education_percentage[]" class="w-full" /></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="form-section font-sans text-base">
+          <strong class="block text-gray-800 text-lg mb-2">Work Experiences (If any):</strong>
+
+          <table class="w-full border border-gray-400 rounded-md overflow-hidden" style="table-layout: fixed;">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="p-2 border border-gray-400 w-[5%]">S.No.</th>
+                <th class="p-2 border border-gray-400 w-[20%]">Organization</th>
+                <th class="p-2 border border-gray-400 w-[15%]">Department</th>
+                <th class="p-2 border border-gray-400 w-[15%]">Designation</th>
+                <th class="p-2 border border-gray-400 w-[15%]">Start Date<br>(Mandatory)</th>
+                <th class="p-2 border border-gray-400 w-[15%]">End Date<br>(Mandatory)</th>
+                <th class="p-2 border border-gray-400 w-[15%]">Salary Drawn</th>
+              </tr>
+            </thead>
+            <tbody id="work-experience-table-body">
+              <tr>
+                <td class="p-2 border border-gray-400">1</td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_org[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_dept[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_designation[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_start_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_end_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_salary[]" class="w-full" /></td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-gray-400">2</td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_org[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_dept[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_designation[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_start_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_end_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_salary[]" class="w-full" /></td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-gray-400">3</td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_org[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_dept[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_designation[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_start_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="date" name="work_end_date[]" class="w-full" /></td>
+                <td class="p-2 border border-gray-400"><input type="text" name="work_salary[]" class="w-full" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+            <div class="form-section font-sans text-base mt-8">
+              <strong class="block text-gray-800 text-lg mb-2">Declaration:</strong>
+
+              <p class="mt-2 leading-relaxed">
+                I hereby declare that the information given above is correct and true to the best of my knowledge.
+                I understand that any misrepresentation of facts may be called for disciplinary action.
+              </p>
+
+              <table class="w-full mt-8 text-base">
+                <tr>
+                  <td class="w-1/2 p-2">
+                    <label for="declaration-date" class="block font-bold mb-1">Date:</label>
+                    <input type="date" id="declaration-date" name="declaration_date" class="w-full p-2 border-b border-gray-400 rounded-md" />
+                  </td>
+                  <td class="w-1/2 p-2">
+                    <label for="declaration-place" class="block font-bold mb-1">Place:</label>
+                    <input type="text" id="declaration-place" name="declaration_place" class="w-full p-2 border-b border-gray-400 rounded-md" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="p-2 pt-12 text-right">
+                    <div class="form-section font-sans text-base mt-8">
+                      <label class="block font-bold mb-2">Signature of Employee:</label>
+                      <canvas id="signature-pad" width="400" height="150" class="signature-canvas w-full max-w-md mx-auto block"></canvas>
+                      <button type="button" onclick="clearSignature()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">Clear Signature</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="form-section text-center mt-8">
+                <button type="submit" class="btn btn-primary px-6 py-3 text-lg font-semibold rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">Submit</button>
+                <button type="reset" class="btn btn-secondary px-6 py-3 text-lg font-semibold rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ml-4">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Saving data...</p>
+    </div>
+
+    <div id="message-box" class="message-box hidden">
+        <p id="message-content"></p>
+        <button onclick="hideMessageBox()">OK</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("signature-pad");
+        const context = canvas.getContext("2d");
+        let drawing = false;
+
+        // Adjust canvas size for responsiveness
+        function resizeCanvas() {
+            const parent = canvas.parentElement;
+            canvas.width = parent.clientWidth > 400 ? 400 : parent.clientWidth; // Max width 400, or parent width
+            canvas.height = 150;
+            context.lineWidth = 2; // Set line width for drawing
+            context.lineCap = 'round'; // Round line endings
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initial resize
+
+        canvas.addEventListener("mousedown", function (e) {
+            drawing = true;
+            context.beginPath();
+            context.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener("mousemove", function (e) {
+            if (drawing) {
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
+            }
+        });
+
+        canvas.addEventListener("mouseup", function () {
+            drawing = false;
+        });
+
+        canvas.addEventListener("mouseleave", function () {
+            drawing = false;
+        });
+
+        canvas.addEventListener("touchstart", function (e) {
+            e.preventDefault(); // Prevent scrolling
+            drawing = true;
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            context.beginPath();
+            context.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        });
+
+        canvas.addEventListener("touchmove", function (e) {
+            e.preventDefault(); // Prevent scrolling
+            if (drawing) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                context.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                context.stroke();
+            }
+        });
+
+        canvas.addEventListener("touchend", function () {
+            drawing = false;
+        });
+
+        function clearSignature() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        function showMessageBox(message) {
+            document.getElementById('message-content').innerText = message;
+            document.getElementById('message-box').classList.remove('hidden');
+        }
+
+        function hideMessageBox() {
+            document.getElementById('message-box').classList.add('hidden');
+        }
+
+        document.getElementById('joiningForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+            showLoading();
+
+            const formData = new FormData(this);
+            const data = {};
+
+            // Collect simple input values
+            for (let [key, value] of formData.entries()) {
+                // Handle array inputs separately
+                if (!key.includes('[]')) {
+                    data[key] = value;
+                }
+            }
+
+            // Collect dependent details
+            const dependentNames = formData.getAll('dependent_name[]');
+            const dependentRelationships = formData.getAll('dependent_relationship[]');
+            const dependentDobs = formData.getAll('dependent_dob[]');
+            const dependentAddresses = formData.getAll('dependent_address[]');
+            const dependentContacts = formData.getAll('dependent_contact[]');
+
+            const dependents = [];
+            for (let i = 0; i < dependentNames.length; i++) {
+                // Only add if at least one field for the dependent is filled
+                if (dependentNames[i] || dependentRelationships[i] || dependentDobs[i] || dependentAddresses[i] || dependentContacts[i]) {
+                    dependents.push({
+                        name: dependentNames[i],
+                        relationship: dependentRelationships[i],
+                        dob: dependentDobs[i],
+                        address: dependentAddresses[i],
+                        contact: dependentContacts[i]
+                    });
+                }
+            }
+            data.dependents_details = dependents;
+
+            // Collect education details
+            const educationUniversityCollege = formData.getAll('education_university_college[]');
+            const educationYearPassing = formData.getAll('education_year_passing[]');
+            const educationPercentage = formData.getAll('education_percentage[]');
+
+            const education = [];
+            for (let i = 0; i < educationUniversityCollege.length; i++) {
+                if (educationUniversityCollege[i] || educationYearPassing[i] || educationPercentage[i]) {
+                    education.push({
+                        qualification: i === 0 ? 'Std. X' : (i === 1 ? 'Std. XII' : (i === 2 ? 'UG (Specify)' : 'PG (Specify)')),
+                        university_college: educationUniversityCollege[i],
+                        year_of_passing: educationYearPassing[i],
+                        percentage: educationPercentage[i]
+                    });
+                }
+            }
+            data.education_details = education;
+
+            // Collect work experience details
+            const workOrg = formData.getAll('work_org[]');
+            const workDept = formData.getAll('work_dept[]');
+            const workDesignation = formData.getAll('work_designation[]');
+            const workStartDate = formData.getAll('work_start_date[]');
+            const workEndDate = formData.getAll('work_end_date[]');
+            const workSalary = formData.getAll('work_salary[]');
+
+            const workExperience = [];
+            for (let i = 0; i < workOrg.length; i++) {
+                if (workOrg[i] || workDept[i] || workDesignation[i] || workStartDate[i] || workEndDate[i] || workSalary[i]) {
+                    workExperience.push({
+                        organization: workOrg[i],
+                        department: workDept[i],
+                        designation: workDesignation[i],
+                        start_date: workStartDate[i],
+                        end_date: workEndDate[i],
+                        salary: workSalary[i]
+                    });
+                }
+            }
+            data.work_experience_details = workExperience;
+
+
+            // Get signature image data
+            data.signature_image_data = canvas.toDataURL('image/png'); // Get base64 image data
+
+            try {
+                const BASE_URL = 'https://your-app-name.onrender.com'; // Replace with your actual deployed backend URL
+                const response = await fetch(`${BASE_URL}/api/employees`, 
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                hideLoading();
+                if (response.ok) {
+                    showMessageBox('Form submitted successfully! Employee ID: ' + result.id);
+                    this.reset(); // Clear the form
+                    clearSignature(); // Clear the signature pad
+                } else {
+                    showMessageBox('Error submitting form: ' + result.message);
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Network error:', error);
+                showMessageBox('Network error. Please try again later.');
+            }
+        });
+    </script>
+</body>
+</html>

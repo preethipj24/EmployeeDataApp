@@ -579,7 +579,7 @@
             data.signature_image_data = canvas.toDataURL('image/png'); // Get base64 image data
 
             try {
-                const response = await fetch('http://localhost:3000/api/employees', {
+                const response = await fetch('https://employeedataapp-1.onrender.com/api/employees', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
